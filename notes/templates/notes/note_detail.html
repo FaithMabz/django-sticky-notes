@@ -1,0 +1,16 @@
+{% extends 'notes/base.html' %}
+{% block content %}
+<div class="note-card">
+    <h2>{{ note.title }}</h2>
+    <p>{{ note.content }}</p>
+    <p><small>Created at: {{ note.created_at }}</small></p>
+    <div class="note-actions">
+        <a href="{% url 'note_update' note.pk %}" class="btn">Edit Note</a>
+        <a href="{% url 'note_list' %}" class="btn">Back to Notes</a>
+        <form method="post" action="{% url 'note_delete' note.pk %}" onsubmit="return confirm('Delete this note permanently?');">
+            {% csrf_token %}
+            <button type="submit" class="btn">Delete</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

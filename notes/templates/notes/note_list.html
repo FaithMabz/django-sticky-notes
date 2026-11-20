@@ -1,0 +1,29 @@
+{% extends 'notes/base.html' %}
+{% block content %}
+<div class="page-heading">
+    <h2>My Notes</h2>
+    <a href="{% url 'note_create' %}" class="btn">+ Create New Note</a>
+</div>
+<div class="notes-container">
+    {% for note in notes %}
+        <div class="note-card">
+            <h3>{{ note.title }}</h3>
+            <p>{{ note.content|truncatewords:25 }}</p>
+            <small>Created at: {{ note.created_at|date:"d M Y" }}</small>
+            <div class="note-actions">
+                <a href="{% url 'note_detail' note.pk %}" class="btn">View</a>
+                <a href="{% url 'note_update' note.pk %}" class="btn">Edit</a>
+                <form method="post" action="{% url 'note_delete' note.pk %}" onsubmit="return confirm('Delete this note permanently?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Delete</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <div class="empty-message">
+            <h3>No Notes Yet!</h3>
+            <p>Click Create New Note to get started.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
